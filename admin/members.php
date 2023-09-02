@@ -5,7 +5,7 @@ ob_start(); // Output Buffering Start
 
 session_start();
 
-$pageTitle = 'Dashboard';
+$pageTitle = 'Members | Admin Panel';
 
 if(isset($_SESSION['username'])) {
 
@@ -628,7 +628,10 @@ echo "<div class='container'>";
 }
 }
 ?>
-<?php include $tpl . 'footer.php';
+
+<?php include $tpl . 'footer.php'; ?>
+
+<?
 
 ob_end_flush();
 
