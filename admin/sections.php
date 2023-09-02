@@ -5,7 +5,7 @@ session_start();
 
 include 'init.php';
 
-$pageTitle = 'Sections'
+$pageTitle = 'Sections |'
 
 ?>
 
