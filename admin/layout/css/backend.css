@@ -1,0 +1,208 @@
+/* Main Rules */
+
+body {
+    background-color: #F4F4F4;
+    font-size: 16px;
+}
+
+/* .asterisk {
+	font-size: 30px;
+    position: absolute;
+    /* right: 500px; */
+    /* top: 0px; */
+    /* color: #D20707; */
+/* } */
+
+/* Main Rules */
+
+/* Login Form */
+
+.login h4 {
+    color : #888;
+}
+
+.login {
+    width: 300px;
+    margin: 100px auto;
+}
+
+.login input {
+    margin-bottom: 10px;
+}
+
+.login .form-control {
+    background-color: #EAEAEA;
+}
+
+.login .btn {
+    background-color: #008dde;
+}
+
+/* Login Form */
+
+
+/* Bootstrap Edit */
+
+.navbar {
+    border-radius: 0;
+    margin-bottom: 0;
+}
+
+.navbar-brand {
+
+    font-size: 1em;
+
+}
+
+.nav>li>a,
+.navbar-brand {
+    padding: 15px 12px;
+}
+
+.navbar-inverse .navbar-nav>.open>a,
+.navbar-inverse .navbar-nav>.open>a:focus,
+.navbar-inverse .navbar-nav>.open>a:hover,
+.dropdown-menu {
+    color: #fff;
+}
+
+.dropdown-menu {
+    min-width: 180px;
+    padding: 0;
+    font-size: 1em;
+    border: none;
+}
+
+.dropdown-menu > li > a {
+    color: #fff;
+    padding: 10px 15px;
+}
+
+
+/* Bootstrap Edit */
+
+
+/* Dashboard Page */
+
+.home-stat .stat {
+    background-color: #EEE;
+    padding: 10px;
+    font-size: 15px;
+    color: #FFF;
+    border-radius: 10px;
+    margin-bottom: 10px;
+}
+
+.home-stat .stat a {
+    color: #FFF;
+    text-decoration: none;
+}
+
+.home-stat .stat span {
+    display: block;
+    font-size: 50px;
+}
+
+.home-stat .st-members {
+    background-color: #2ecc71 ;
+}
+.home-stat .st-members:hover {
+    background-color: #27ae60 ;
+}
+
+.home-stat .st-pending {
+    background-color: #e67e22 ;
+}
+.home-stat .st-pending:hover {
+    background-color: #d35400 ;
+}
+
+.home-stat .st-items {
+    background-color: #3498db ;
+}
+.home-stat .st-items:hover {
+    background-color: #2980b9 ;
+}
+
+.home-stat .st-comments {
+    background-color: #1abc9c ;
+}
+.home-stat .st-comments:hover {
+    background-color: #16a085 ;
+}
+
+.latest {
+    margin-top: 30px;
+}
+
+.latest-users {
+    margin-bottom: 0;
+}
+
+.latest-users li {
+    padding: 5px 0;
+    overflow: hidden;
+    list-style-type: none;
+}
+
+
+
+.latest-users li .btn-latest {
+    text-align: center;
+    margin-left: 10px;
+    margin-right: 3px;
+    /* padding-left: 20px; */
+    /* padding-right: 20px; */
+}
+
+
+/* Dashboard Page */
+
+
+/* Members Page */
+
+
+h1 {
+    font-size: 55px;
+    margin: 40px 0;
+    font-weight: bold;
+    color: #666;
+}
+
+h2.text-center.login-header {
+    color: #666;
+    font-weight: bold;
+    font-size: 45px;
+    margin: 30px 0;
+}
+
+.form-group {
+    margin-bottom: 10px;
+}
+
+.form-group .select {
+    margin-bottom: 10px;
+}
+
+.main-table {
+    box-shadow: 0 3px 10px #CCC;
+    -webkit-box-shadow: 0 3px 10px #CCC;
+    -moz-box-shadow: 0 3px 10px #CCC;
+}
+
+.main-table td {
+    background-color: #fff;
+    vertical-align: middle !important;
+}
+
+.main-table tr:first-child td {
+    background-color: #333;
+    color: #fff;
+}
+
+.main-table .btn {
+    padding: 3px 16px;
+    margin: 5px;
+}
+
+/* Members Page */
