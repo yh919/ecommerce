@@ -8,7 +8,7 @@
         <div class="collapse navbar-collapse" id="app-nav">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" aria-current="page" href="sections.php"><?php echo lang('CATEGORIES')?></a>
+                    <a class="nav-link" aria-current="page" href="categories.php"><?php echo lang('CATEGORIES')?></a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="#"><?php echo lang('ITEMS')?></a>

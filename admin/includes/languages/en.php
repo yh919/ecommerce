@@ -7,7 +7,7 @@ function lang($phrase) {
     static $lang = array(
        // Dashboard Page Navbar
     'HOME_ADMIN'    => 'ADMIN PANEL',
-    'CATEGORIES'    => 'Sections',
+    'CATEGORIES'    => 'Categories',
     'ITEMS'         => 'Items',
     'MEMBERS'       => 'Members',
     'ADMIN_NAME'    => "Bunny",
@@ -46,6 +46,14 @@ function lang($phrase) {
     // Activation
     'ACTIVATE_MEMBER' => 'Activate Member',
     'DEACTIVATE_MEMBER' => 'Dectivate Member',
+    // Categories 
+    'CATEGORY_NAME' => 'Category Name',
+    'CATEGORY_DESCTIPTION' => 'Descriprion',
+    'MANAGE_CATEGORIES' => 'Manage Categories',
+    'ADD_CATEGORY' => 'Add Category',
+    'UPDATE_CATEGORY' => 'Update Category',
+    'Edit_CATEGORY' => 'Edit Category',
+    'DELETE_CATEGORY' => 'Delete Category',
     );
 
     return $lang[$phrase];
