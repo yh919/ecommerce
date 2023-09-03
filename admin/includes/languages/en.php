@@ -48,11 +48,11 @@ function lang($phrase) {
     'DEACTIVATE_MEMBER' => 'Dectivate Member',
     // Categories 
     'CATEGORY_NAME' => 'Category Name',
-    'CATEGORY_DESCTIPTION' => 'Descriprion',
+    'CATEGORY_DESCTIPTION' => 'Description',
     'MANAGE_CATEGORIES' => 'Manage Categories',
     'ADD_CATEGORY' => 'Add Category',
     'UPDATE_CATEGORY' => 'Update Category',
-    'Edit_CATEGORY' => 'Edit Category',
+    'EDIT_CATEGORY' => 'Edit Category',
     'DELETE_CATEGORY' => 'Delete Category',
     );
 

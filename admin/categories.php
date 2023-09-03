@@ -49,7 +49,7 @@ if(isset($_SESSION['username'])) {
                     // $accessstatus = lang('ADMIN');
                 // } else {
                     // $accessstatus = lang('MEMBER');
-                }
+
 
                 echo "<tr>";
                 echo "<td>" . $row['id'] . "</td>";
@@ -74,20 +74,22 @@ if(isset($_SESSION['username'])) {
                     Deactive
                 </a> -->
                 <?php
-                    // }
+                    }
                     ?>
             </td>
             </tr>
             <?php
-            }
             ?>
         </table>
     </div>
-    <a class="btn btn-primary" href="categories.php?do=Add"> <i class="fa-solid fa-plus fa-xl"></i> New Member </a>
+    <a class="btn btn-primary" href="categories.php?do=Add"> <i class="fa-solid fa-plus fa-xl"></i> New Category </a>
 </div>
 
 
-<?php } elseif ($do == 'Add') { // Add categories Page ?>
+
+<?php } elseif ($do == 'Add') { ?>
+
+
 
 <h1 class="text-center">
     <?php echo lang('ADD_CATEGORY') ?>
@@ -100,8 +102,8 @@ if(isset($_SESSION['username'])) {
                 placeholder="Enter Category Name">
         </div>
         <div class="col-md-4">
-            <label for="fullname" class="form-label"><?php echo lang('CATEGORY_DESCRIPTION')?></label>
-            <input type="text" class="form-control" id="fullname" name="fullname" required='required'
+            <label for="fullname" class="form-label"><?php  echo lang('CATEGORY_DESCTIPTION')?></label>
+            <input type="text" class="form-control" id="description" name="description" required='required'
                 placeholder="Enter Description">
         </div>
         <div class="col-12">
@@ -109,12 +111,7 @@ if(isset($_SESSION['username'])) {
         </div>
     </form>
 </div>
-
-
-
-<?php
-
-}elseif ($do == 'Insert') { // Insert Member Page
+<?php } elseif ($do == 'Insert') { // Insert Member Page
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
@@ -125,44 +122,23 @@ if(isset($_SESSION['username'])) {
 
         // Get Variables from FORM
 
-        $user   = $_POST['username'];
-        $name   = $_POST['fullname'];
-        $email  = $_POST['email'];
-        $pass   = $_POST['password'];
-        $hashPass = sha1($pass);
-        $groupid = $_POST['groupid'];
-        $trustedseller = $_POST['truststatus'];
-        $regstatus = $_POST['regstatus'];
+        $catname   = $_POST['name'];
+        $descr   = $_POST['description'];
 
         // Validate Form
 
         $formErrors = array();
 
-        if (strlen($user) < 4) {
-            $formErrors[] = 'Username can\'t be less than <strong>4 Chars</strong>';
-        }
 
-        if (empty($user)) {
+        if (empty($catname)) {
 
             $formErrors[] = 'Username can\'t be <strong>Empty</strong>';
         }
 
-        if (empty($name)) {
+        if (empty($descr)) {
 
             $formErrors[] = 'Full Name can\'t be <strong>Empty</strong>';;
 
-        }
-        if (empty($email)) {
-
-            $formErrors[] = 'Email can\'t be <strong>Empty</strong>';
-        }
-        if (empty($pass)) {
-
-            $formErrors[] = 'Pasword can\'t be <strong>Empty</strong>';
-        }
-        if ($pass < 6) {
-
-            $formErrors[] = 'Pasword can\'t be less than <strong>6 Chars</strong>';
         }
 
         // Loop into error array > Show it
@@ -176,17 +152,12 @@ if(isset($_SESSION['username'])) {
 
         // Check if user exist in database
 
-        $check = checkItem("username", "users", $user);
-
-        // Check if email exist in database
-
-        $checkMail = checkItem("username", "users", $email);
+        $check = checkItem("name", "categories", $catname);
 
 
-        if ($check == 1 || $checkMail == 1 ) {
+        if ($check == 1) {
 
-            echo   "<div class='alert alert-warning'> <strong> Username $user already exist </strong> </div>";
-            echo   "<div class='alert alert-warning'> <strong> Username $email already exist </strong> </div>";
+            echo   "<div class='alert alert-warning'> <strong> Username $catname already exist </strong> </div>";
 
             redirectSuccess(6,$url);
 
@@ -195,16 +166,11 @@ if(isset($_SESSION['username'])) {
         // Insert info into database
 
         $stmt = $con->prepare("INSERT INTO
-                                            users (username, password, email, fullname, groupid, truststatus , regstatus)
-                                            VALUES (:zuser, :zpass, :zmail, :zname, :zgroupid, :ztruststatus, :zregstatus)");
+                                            categories (name, description)
+                                            VALUES (:zcatname, :zdescr)");
         $stmt->execute(array(
-            'zuser'        => $user,
-            'zpass'        => $hashPass,
-            'zmail'        => $email,
-            'zname'        => $name,
-            'zgroupid'     => $groupid,
-            'ztruststatus' => $trustedseller,
-            'zregstatus'   => $regstatus
+            'zcatname'        => $catname,
+            'zdescr'        => $descr,
         ));
         // Echo Success Message
 
@@ -234,13 +200,13 @@ if(isset($_SESSION['username'])) {
 
         // Check IF Get user request is numeric & get the int value of it
 
-        $userid = (isset($_GET['userid']) && is_numeric($_GET['userid'])) ? intval($_GET['userid']) : 0;
+        $catid = (isset($_GET['userid']) && is_numeric($_GET['userid'])) ? intval($_GET['userid']) : 0;
 
         // Select All Data Depend on this ID
-        $stmt = $con->prepare("SELECT * FROM users WHERE userid = ? LIMIT 1");
+        $stmt = $con->prepare("SELECT * FROM categories WHERE id = ? LIMIT 1");
 
         // Execute Query
-        $stmt->execute(array($userid));
+        $stmt->execute(array($catid));
 
         // Fetch the data
         $row = $stmt->fetch();
@@ -248,28 +214,12 @@ if(isset($_SESSION['username'])) {
         // The Row Count
         $count = $stmt->rowCount();
 
-
-        // Group id variables
-        $usergroupid = '';
-        if ($row['groupid'] == '1') {
-            $usergroupid = lang('ADMIN');
-        } else {
-            $usergroupid = lang('MEMBER');
-        }
-
-        // Truster Seller variables
-        $usertrusted = '';
-        if ($row['truststatus'] == '1') {
-            $usertrusted = lang('TRUSTED_SELLER');
-        } else {
-            $usertrusted = lang('NOT_TRUSTED_SELLER');
-        }
         // If ID is valid >> Show Form
 
             if ($stmt->rowCount() > 0 ) { ?>
 
 <h1 class="text-center">
-    <?php echo lang('EDIT_MEMBER') ?>
+    <?php echo lang('EDIT_CATEGORY') ?>
 </h1>
 <div class="container">
     <form class="row g-3" action="?do=Update" method="POST">
@@ -355,58 +305,17 @@ if(isset($_SESSION['username'])) {
 
         // Get Variables from FORM
 
-        $id     = $_POST['userid'];
-        $user   = $_POST['username'];
-        $name   = $_POST['fullname'];
-        $email  = $_POST['email'];
-        $oldpass = $_POST['oldpassword'];
-        $newpass = $_POST['newpassword'];
-        $verifypass = $_POST['verifypassword'];
-        $groupid = $_POST['membergroupid'];
-        $truststatus = $_POST['truststatus'];
+       // 5od alcode mn ?do=Add
 
-
-        // Password Trick
-
-
-        $pass = '';
-
-        if (empty($newpass)) {
-
-            $pass = $oldpass;
-
-        } else {
-
-            $pass = sha1($newpass);
-        }
 
         // Validate Form
 
         $formErrors = array();
 
-        if (strlen($user) < 4) {
-            $formErrors[] = 'Username can\'t be less than <strong>4 Chars</strong>';
-        }
+        // 5od alcode mn $do=Add
 
-        if (empty($user)) {
 
-            $formErrors[] = 'Username can\'t be <strong>Empty</strong>';
-        }
-
-        if (empty($name)) {
-
-            $formErrors[] = 'Full Name can\'t be <strong>Empty</strong>';;
-
-        }
-        if (empty($email)) {
-
-            $formErrors[] = 'Email can\'t be <strong>Empty</strong>';
-        }
         
-        if ($verifypass != $newpass) {
-
-            $formErrors[] = '<strong>Your password didn\'t match verify password</strong>';
-        }
 
         // Loop into error array > Show it
         foreach($formErrors as $error) {
@@ -422,8 +331,15 @@ if(isset($_SESSION['username'])) {
 
         // Update Database with updated information
 
-        $stmt = $con->prepare("UPDATE users SET username = ? , password = ? , email = ? , fullname = ? , groupid = ? , truststatus = ? WHERE userid = ?");
-        $stmt->execute(array($user,$pass,$email,$name,$groupid,$truststatus,$id));
+
+            //   متنساش تغير الباراميترز في الستاتمينت عشان متقعدش تدور علي الايرور فين ساعه
+            //                                       متنساش
+
+        // $stmt = $con->prepare("UPDATE users SET username = ? , password = ? , email = ? , fullname = ? , groupid = ? , truststatus = ? WHERE userid = ?");
+        // $stmt->execute(array($user,$pass,$email,$name,$groupid,$truststatus,$id));
+
+                        //                           بص فوق
+
 
         // Echo Success Message
 
@@ -436,7 +352,7 @@ if(isset($_SESSION['username'])) {
         }
 } else {
 
-    $errorMsg = "You Can't Access this page";
+    $errorMsg = "عدل ام الباراميترز";
     $url = 'categories.php?do=Edit&userid=' . $_SESSION['id'];
 redirectHome($errorMsg, 5 ,$url);
 }
@@ -486,96 +402,8 @@ echo "<div class='container'>";
     redirectHome($errorMsg,3,$url);
     }
     echo '</div>';
-} elseif ($do == 'Activate') {
+}
 
-  echo "<h1 class='text-center'>";
-    echo lang('ACTIVATE_MEMBER');
-    echo "</h1>";
-echo "<div class='container'>";
-
-    // Check IF Get user request is numeric & get the int value of it
-
-    $userid = (isset($_GET['userid']) && is_numeric($_GET['userid'])) ? intval($_GET['userid']) : 0;
-
-    // Select All Data Depend on this ID
-    $stmt = $con->prepare("SELECT * FROM users WHERE userid = ? LIMIT 1");
-
-    // Execute Query
-    $stmt->execute(array($userid));
-
-    // Fetch the data
-    $row = $stmt->fetch();
-
-    // The Row Count
-    $count = $stmt->rowCount();
-
-    if ($stmt->rowCount() > 0 ) {
-
-    // Delete User Depends on USERID
-    $stmt = $con->prepare("UPDATE users SET regstatus = 1 WHERE userid = ? ");
-    // Bind Parameter to $userid
-    // $stmt->bindParam(":zuser", $userid);
-    // Excute Query
-    $stmt->execute(array($userid));
-
-    echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Activated </div> ';
-
-    $url = 'categories.php?do=Manage';
-    redirectSuccess(3,$url);
-
-    } else {
-
-    $errorMsg = 'This ID is not exist';
-    $url = 'index.php';
-    redirectHome($errorMsg,3,$url);
-    }
-    echo '</div>';
-
-
-    
-} elseif ($do == 'Deactivate') {
-    echo "<h1 class='text-center'>";
-    echo lang('ACTIVATE_MEMBER');
-    echo "</h1>";
-echo "<div class='container'>";
-
-    // Check IF Get user request is numeric & get the int value of it
-
-    $userid = (isset($_GET['userid']) && is_numeric($_GET['userid'])) ? intval($_GET['userid']) : 0;
-
-    // Select All Data Depend on this ID
-    $stmt = $con->prepare("SELECT * FROM users WHERE userid = ? LIMIT 1");
-
-    // Execute Query
-    $stmt->execute(array($userid));
-
-    // Fetch the data
-    $row = $stmt->fetch();
-
-    // The Row Count
-    $count = $stmt->rowCount();
-
-    if ($stmt->rowCount() > 0 ) {
-
-    // Delete User Depends on USERID
-    $stmt = $con->prepare("UPDATE users SET regstatus = 0 WHERE userid = ? ");
-    // Bind Parameter to $userid
-    // $stmt->bindParam(":zuser", $userid);
-    // Excute Query
-    $stmt->execute(array($userid));
-
-    echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Dectivated </div> ';
-
-    $url = 'categories.php?do=Manage';
-    redirectSuccess(3,$url);
-
-    } else {
-
-    $errorMsg = 'This ID is not exist';
-    $url = $_SERVER['HTTP_REFFER'];
-    redirectHome($errorMsg,3,$url);
-    }
-    echo '</div>';
 } else {
 
     header('Location: index.php');
