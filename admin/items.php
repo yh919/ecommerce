@@ -1,11 +1,11 @@
 <?php
 ob_start(); // Output Buffering Start
-// Manage categories Page
+// Manage Items Page
 // You can Add || Edit || Delete Mebers
 
 session_start();
 
-$pageTitle = 'Categories | Admin Panel';
+$pageTitle = 'Items | Admin Panel';
 
 if(isset($_SESSION['username'])) {
 
@@ -17,44 +17,86 @@ if(isset($_SESSION['username'])) {
 
     // Start Manage Page
 
-    if ($do == 'Manage') { // Manage categories Page
+    if ($do == 'Manage') { // Manage Items Page
 
         $query = '';
 
         // Select Users from Database
-        $stmt = $con->prepare("SELECT * FROM categories");
+        $stmt = $con->prepare("SELECT * FROM items");
         // Excute Statement
         $stmt->execute();
         // Assign to variable
         $rows = $stmt->fetchAll();
 
-    ?>
 
-<h1 class="text-center"><?php echo lang('MANAGE_CATEGORIES') ?></h1>
+
+        ?>
+
+<h1 class="text-center"><?php echo lang('MANAGE_ITEMS') ?></h1>
 <div class="container">
     <div class="table-responsive">
         <table class="main-table text-center table table-bordered">
             <tr>
                 <td>#ID</td>
-                <td>Category Name</td>
-                <td>Description</td>
+                <td>Item Name</td>
+                <td>Category</td>
+                <td>Price</td>
                 <td>Control</td>
             </tr>
 
+
+            <?php
+            
+            // $rowcatid = $rows['catid'];
+            
+            // $stmtcat = $con->prepare("SELECT id , name FROM categories WHERE id = $rowcatid");
+            // $stmtcat->execute();
+            // $catidget = $stmtcat->fetchAll();
+            
+            // echo $rows['catid'];
+            ?>
+
+
+
             <?php
 
-            foreach($rows as $row) {
-                // $accessstatus = '';
-                // if ($row['groupid'] == 1) {
-                    // $accessstatus = lang('ADMIN');
-                // } else {
-                    // $accessstatus = lang('MEMBER');
+                // Select All Data Depend on this ID
+
+                $stmt3 = $con->prepare("SELECT
+                                            *
+                                        FROM
+                                        categories");
+                $stmt3->execute();
+                $cat = $stmt3->fetchAll();
+
+                
+                
+                                // echo '<pre>';
+                                // print_r($cat);
+                                // echo '</pre>';
+                                
+                                
+                                foreach($rows as $row) {
+                                    // $accessstatus = '';
+                                    // if ($row['groupid'] == 1) {
+                                        // $accessstatus = lang('ADMIN');
+                                        // } else {
+                                            // $accessstatus = lang('MEMBER');
+                                            $catname = '';
+                                            foreach($cat as $ids) {
+                                                if ($row['catid'] == $ids['id']) {
+                                                    $catname = $ids['name'];
+                                                }
+                                            }
+
+
 
 
                 echo "<tr>";
                 echo "<td>" . $row['id'] . "</td>";
-                echo "<td>" . $row['name'] . "</td>";
-                echo "<td>" . $row['description'] . "</td>";
+                echo "<td>" . $row['item_name'] . "</td>";
+                echo "<td>" . $catname . "</td>";
+                echo "<td>" . $row['price'] . "</td>";
                 ?>
             <td>
                 <a href="categories.php?do=Edit&id=<?php echo $row['id'] ?>" class="btn btn-success">
@@ -82,7 +124,7 @@ if(isset($_SESSION['username'])) {
             ?>
         </table>
     </div>
-    <a class="btn btn-primary" href="categories.php?do=Add"> <i class="fa-solid fa-plus fa-xl"></i> New Category </a>
+    <a class="btn btn-primary" href="items.php?do=Add"> <i class="fa-solid fa-plus fa-xl"></i> New Item </a>
 </div>
 
 
@@ -92,7 +134,7 @@ if(isset($_SESSION['username'])) {
 
 
 <h1 class="text-center">
-    <?php echo lang('ADD_CATEGORY') ?>
+    <?php echo lang('ADD_ITEM') ?>
 </h1>
 <div class="container">
     <form class="row g-3 form-group" action="?do=Insert" method="POST">
@@ -367,7 +409,7 @@ echo "<div class='container'>";
 
     echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Deleted </div> ';
 
-    $url = 'categories.php?do=Manage';
+    $url = 'items.php?do=Manage';
     redirectSuccess(3,$url);
 
     } else {

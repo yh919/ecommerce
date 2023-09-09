@@ -54,6 +54,14 @@ function lang($phrase) {
     'UPDATE_CATEGORY' => 'Update Category',
     'EDIT_CATEGORY' => 'Edit Category',
     'DELETE_CATEGORY' => 'Delete Category',
+    // Items
+    'ITEM_NAME' => 'Item Name',
+    'ITEM_PRICE' => 'Price',
+    'MANAGE_ITEMS' => 'Manage Items',
+    'ADD_ITEM' => 'Add Item',
+    'UPDATE_ITEM' => 'Update Item',
+    'EDIT_ITEM' => 'Edit Item',
+    'DELETE_ITEM' => 'Delete Item',
     );
 
     return $lang[$phrase];
