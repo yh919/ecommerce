@@ -118,17 +118,17 @@ body {
 }
 
 .home-stat .st-items {
-    background-color: #3498db ;
-}
-.home-stat .st-items:hover {
-    background-color: #2980b9 ;
-}
-
-.home-stat .st-comments {
     background-color: #1abc9c ;
 }
-.home-stat .st-comments:hover {
+.home-stat .st-items:hover {
     background-color: #16a085 ;
+}
+
+.home-stat .st-categories {
+    background-color: #3498db ;
+}
+.home-stat .st-categories:hover {
+    background-color: #2980b9 ;
 }
 
 .latest {

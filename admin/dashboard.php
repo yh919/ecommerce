@@ -38,15 +38,17 @@ if(isset($_SESSION['username'])) {
             </div>
         </div>
         <div class="col-md-3">
-            <div class="stat st-items">
-                Total Items
-                <span>1500</span>
+            <div class="stat st-categories">
+                Total Categories
+                <span><a href="categories.php">
+                        <?php echo countItems('id', 'categories') ?>
+                    </a></span>
             </div>
         </div>
         <div class="col-md-3">
-            <div class="stat st-comments">
-                Total Comments
-                <span>3500</span>
+            <div class="stat st-items">
+                Total Items
+                <span>1500</span>
             </div>
         </div>
     </div>
