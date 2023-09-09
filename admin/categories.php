@@ -200,7 +200,7 @@ if(isset($_SESSION['username'])) {
 
         // Check IF Get user request is numeric & get the int value of it
 
-        $catid = (isset($_GET['userid']) && is_numeric($_GET['userid'])) ? intval($_GET['userid']) : 0;
+        $catid = (isset($_GET['id']) && is_numeric($_GET['id'])) ? intval($_GET['id']) : 0;
 
         // Select All Data Depend on this ID
         $stmt = $con->prepare("SELECT * FROM categories WHERE id = ? LIMIT 1");
@@ -222,62 +222,16 @@ if(isset($_SESSION['username'])) {
     <?php echo lang('EDIT_CATEGORY') ?>
 </h1>
 <div class="container">
-    <form class="row g-3" action="?do=Update" method="POST">
-        <input type="hidden" name="userid" value="<?php echo $userid ?>">
+    <form class="row g-3 form-group" action="?do=Update" method="POST">
         <div class="col-md-4">
-            <label for="username" class="form-label"><?php echo lang('USERNAME')?></label>
-            <input type="text" class="form-control" id="username" name="username" value="<?php echo $row['username'] ?>"
-                autocomplete="off" required='required'>
-        </div>
-        <div class="col-md-4">
-            <label for="fullname" class="form-label"><?php echo lang('FULLNAME')?></label>
-            <input type="text" class="form-control" id="fullname" name="fullname" value="<?php echo $row['fullname'] ?>"
-                required='required'>
+            <label for="username" class="form-label"><?php echo lang('CATEGORY_NAME')?></label>
+            <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
+                placeholder="Enter Category Name">
         </div>
         <div class="col-md-4">
-            <label for="email" class="form-label"><?php echo lang('EMAIL_ADDRESS')?></label>
-            <input type="email" class="form-control" id="email" name="email" value="<?php echo $row['email'] ?>"
-                required='required'>
-        </div>
-        <div class="col-md-6">
-            <label for="password" class="form-label"><?php echo lang('PASSWORD')?></label>
-            <input type="hidden" id="password" name="oldpassword" value="<?php echo $row['password']?>">
-            <input type="password" class="form-control" id="password" name="newpassword" autocomplete="new-password"
-                placeholder="Leave it blank if you don't need to change">
-        </div>
-        <div class="col-md-6">
-            <label for="password" class="form-label"><?php echo lang('VERIFY_PASSWORD')?></label>
-            <input type="password" class="form-control" id="password" name="verifypassword" autocomplete="new-password"
-                placeholder="Retype your password or Leave it blank if you don't need to change">
-        </div>
-        <div class="col-md-4 select">
-            <label for="useracces" class="form-label">User Access</label>
-
-            <?php if ($row['groupid'] == 1) { ?>
-            <select class="form-select" name="membergroupid" aria-label="user group id select">
-                <option selected value="<?php echo $row['groupid'] ?>"> <?php echo $usergroupid ?></option>
-                <option value="0"><?php echo lang('MEMBER')?></option>
-            </select>
-            <?php } elseif ($row['groupid'] == 0) { ?>
-            <select class="form-select" name="membergroupid" aria-label="user group id select">
-                <option selected value="<?php echo $row['groupid'] ?>"> <?php echo $usergroupid ?></option>
-                <option value="1"><?php echo lang('ADMIN')?></option>
-            </select>
-            <?php } ?>
-        </div>
-        <div class="col-md-4 select">
-            <label for="trusteduser" class="form-label">Trusted Status</label>
-            <?php if ($row['truststatus'] == 1) { ?>
-            <select class="form-select" name="truststatus" aria-label="user group id select">
-                <option selected value="<?php echo $row['truststatus'] ?>"><?php echo $usertrusted ?></option>
-                <option value="0"><?php echo lang('NOT_TRUSTED_SELLER')?></option>
-            </select>
-            <?php } elseif ($row['truststatus'] == 0) { ?>
-            <select class="form-select" name="truststatus" aria-label="user group id select">
-                <option selected value="<?php echo $row['truststatus'] ?>"><?php echo $usertrusted ?></option>
-                <option value="0"><?php echo lang('TRUSTED_SELLER')?></option>
-            </select>
-            <?php } ?>
+            <label for="fullname" class="form-label"><?php  echo lang('CATEGORY_DESCTIPTION')?></label>
+            <input type="text" class="form-control" id="description" name="description" required='required'
+                placeholder="Enter Description">
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary"><?php echo lang('UPDATETEXT') ?></button>
@@ -305,6 +259,10 @@ if(isset($_SESSION['username'])) {
 
         // Get Variables from FORM
 
+        
+        $catname   = $_POST['name'];
+        $descr   = $_POST['description'];
+
        // 5od alcode mn ?do=Add
 
 
@@ -313,30 +271,46 @@ if(isset($_SESSION['username'])) {
         $formErrors = array();
 
         // 5od alcode mn $do=Add
+if (empty($catname)) {
 
+            $formErrors[] = 'Username can\'t be <strong>Empty</strong>';
+        }
 
-        
+        if (empty($descr)) {
+
+            $formErrors[] = 'Full Name can\'t be <strong>Empty</strong>';;
+
+        }
 
         // Loop into error array > Show it
         foreach($formErrors as $error) {
             echo '<div class="alert alert-danger">' . $error . '</div>';
-            $url = $_SERVER['HTTP_REFERER'];
-            redirectSuccess(3,$url);
         }
 
         // If no error >> Update Operation
 
         if (empty($formErrors)) {
 
+        // Check if user exist in database
 
+        $check = checkItem("name", "categories", $catname);
+
+
+        if ($check == 1) {
+
+            echo   "<div class='alert alert-warning'> <strong> Username $catname already exist </strong> </div>";
+
+            redirectSuccess(6,$url);
+
+        }
         // Update Database with updated information
 
 
             //   متنساش تغير الباراميترز في الستاتمينت عشان متقعدش تدور علي الايرور فين ساعه
             //                                       متنساش
 
-        // $stmt = $con->prepare("UPDATE users SET username = ? , password = ? , email = ? , fullname = ? , groupid = ? , truststatus = ? WHERE userid = ?");
-        // $stmt->execute(array($user,$pass,$email,$name,$groupid,$truststatus,$id));
+        $stmt = $con->prepare("UPDATE categories SET name = ? , description = ? WHERE id = ?");
+        $stmt->execute(array($catname,$descr));
 
                         //                           بص فوق
 
@@ -353,7 +327,7 @@ if(isset($_SESSION['username'])) {
 } else {
 
     $errorMsg = "عدل ام الباراميترز";
-    $url = 'categories.php?do=Edit&userid=' . $_SESSION['id'];
+    $url = 'categories.php?do=Edit&catid=' . $_SESSION['id'];
 redirectHome($errorMsg, 5 ,$url);
 }
 
