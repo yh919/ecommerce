@@ -49,7 +49,7 @@ if(isset($_SESSION['username'])) {
             
             // $rowcatid = $rows['catid'];
             
-            // $stmtcat = $con->prepare("SELECT id , name FROM items WHERE id = $rowcatid");
+            // $stmtcat = $con->prepare("SELECT id , name FROM categories WHERE id = $rowcatid");
             // $stmtcat->execute();
             // $catidget = $stmtcat->fetchAll();
             
@@ -65,7 +65,7 @@ if(isset($_SESSION['username'])) {
                 $stmt3 = $con->prepare("SELECT
                                             *
                                         FROM
-                                        items");
+                                        categories");
                 $stmt3->execute();
                 $cat = $stmt3->fetchAll();
 
@@ -106,13 +106,13 @@ if(isset($_SESSION['username'])) {
                 <!-- <?php
                     // if ($row['regstatus'] == 0) {
                         ?>
-                <a href="items.php?do=Activate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
+                <a href="categories.php?do=Activate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
                     Activate
                 </a>
                 <?php
                     // } elseif ($row['regstatus'] == 1) {
                         // ?>
-                <a href="items.php?do=Deactivate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
+                <a href="categories.php?do=Deactivate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
                     Deactive
                 </a> -->
                 <?php
@@ -277,32 +277,32 @@ if(isset($_SESSION['username'])) {
 <h1 class="text-center">
     <?php echo lang('EDIT_CATEGORY') ?>
 </h1>
-div class="container">
-<form class="row g-3 form-group" action="?do=Update" method="POST">
-    <input type="hidden" name="itemid" value="<?php echo $itemid ?>">
-    <div class="col-md-4">
-        <label for="itemname" class="form-label"><?php echo lang('ITEM_NAME')?></label>
-        <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
-            placeholder="Enter Item Name" value="<?php echo $row['item_name'] ?>">
-    </div>
-    <div class="col-md-4">
-        <label for="itemprice" class="form-label"><?php  echo lang('ITEM_PRICE')?></label>
-        <input type="text" class="form-control" id="itemprice" name="itemprice" required='required'
-            placeholder="Enter Item Price" value="<?php echo $row['price'] ?>">
-    </div>
-    <div class="col-md-4">
-        <label for="itemcat" class="form-label"><?php echo lang('ITEM_CATEGORY') ?></label>
-        <select name="itemcatid" id="itemcatid" class="form-select">
-            <option selected> Choose Category </option>
-            <option value="1"> Mobiles </option>
-            <option value="2"> TVs </option>
+<div class="container">
+    <form class="row g-3 form-group" action="?do=Update" method="POST">
+        <input type="hidden" name="itemid" value="<?php echo $itemid ?>">
+        <div class="col-md-4">
+            <label for="itemname" class="form-label"><?php echo lang('ITEM_NAME')?></label>
+            <input type="text" class="form-control" id="name" name="itemname" autocomplete="off" required='required'
+                placeholder="Enter Item Name" value="<?php echo $row['item_name'] ?>">
+        </div>
+        <div class="col-md-4">
+            <label for="itemprice" class="form-label"><?php  echo lang('ITEM_PRICE')?></label>
+            <input type="text" class="form-control" id="itemprice" name="itemprice" required='required'
+                placeholder="Enter Item Price" value="<?php echo $row['price'] ?>">
+        </div>
+        <div class="col-md-4">
+            <label for="itemcat" class="form-label"><?php echo lang('ITEM_CATEGORY') ?></label>
+            <select name="itemcatid" id="itemcatid" class="form-select">
+                <option selected> Choose Category </option>
+                <option value="1"> Mobiles </option>
+                <option value="2"> TVs </option>
 
-        </select>
-    </div>
-    <div class="col-md-12">
-        <button type="submit" class="btn btn-primary"><?php echo lang('SUBMIT') ?></button>
-    </div>
-</form>
+            </select>
+        </div>
+        <div class="col-md-12">
+            <button type="submit" class="btn btn-primary"><?php echo lang('SUBMIT') ?></button>
+        </div>
+    </form>
 </div>
 
 
@@ -360,7 +360,7 @@ if (empty($itemName)) {
 
         // Check if user exist in database
 
-        $check = checkItem("name", "items", $itemName);
+        $check = checkItem("name", "categories", $itemName);
 
 
         if ($check == 1) {
@@ -377,7 +377,7 @@ if (empty($itemName)) {
             //                                       متنساش
 
         $stmt = $con->prepare("UPDATE items SET item_name = ? , catid = ? , price = ? WHERE id = ?");
-        $stmt->execute(array($itemName,$price,$catid,$id));
+        $stmt->execute(array($itemName,$catid,$price,$id));
 
                         //                           بص فوق
 
