@@ -59,7 +59,7 @@ if(isset($_SESSION['username'])) {
             <td>
                 <a href="categories.php?do=Edit&id=<?php echo $row['id'] ?>" class="btn btn-success">
                     Edit</a>
-                <a href="categories.php?do=Delete&userid=<?php echo $row['id'] ?>" class="btn btn-danger confirm">
+                <a href="categories.php?do=Delete&id=<?php echo $row['id'] ?>" class="btn btn-danger confirm">
                     Delete</a>
                 <!-- <?php
                     // if ($row['regstatus'] == 0) {
@@ -174,7 +174,7 @@ if(isset($_SESSION['username'])) {
         ));
         // Echo Success Message
 
-        echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Updated </div> ';
+        echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Added </div> ';
 
         $url = 'categories.php?do=Manage';
         
@@ -224,6 +224,7 @@ if(isset($_SESSION['username'])) {
 <div class="container">
     <form class="row g-3 form-group" action="?do=Update" method="POST">
         <div class="col-md-4">
+            <input type="hidden" name="catid" value="<?php echo $catid ?>">
             <label for="username" class="form-label"><?php echo lang('CATEGORY_NAME')?></label>
             <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
                 placeholder="Enter Category Name">
@@ -259,9 +260,9 @@ if(isset($_SESSION['username'])) {
 
         // Get Variables from FORM
 
-        
-        $catname   = $_POST['name'];
-        $descr   = $_POST['description'];
+        $id         = $_POST['catid'];
+        $catname    = $_POST['name'];
+        $descr      = $_POST['description'];
 
        // 5od alcode mn ?do=Add
 
@@ -310,7 +311,7 @@ if (empty($catname)) {
             //                                       متنساش
 
         $stmt = $con->prepare("UPDATE categories SET name = ? , description = ? WHERE id = ?");
-        $stmt->execute(array($catname,$descr));
+        $stmt->execute(array($catname,$descr,$id));
 
                         //                           بص فوق
 
@@ -327,7 +328,7 @@ if (empty($catname)) {
 } else {
 
     $errorMsg = "عدل ام الباراميترز";
-    $url = 'categories.php?do=Edit&catid=' . $_SESSION['id'];
+    $url = 'categories.php';
 redirectHome($errorMsg, 5 ,$url);
 }
 
@@ -341,13 +342,13 @@ echo "<div class='container'>";
 
     // Check IF Get user request is numeric & get the int value of it
 
-    $userid = (isset($_GET['userid']) && is_numeric($_GET['userid'])) ? intval($_GET['userid']) : 0;
+    $catid = (isset($_GET['id']) && is_numeric($_GET['id'])) ? intval($_GET['id']) : 0;
 
     // Select All Data Depend on this ID
-    $stmt = $con->prepare("SELECT * FROM users WHERE userid = ? LIMIT 1");
+    $stmt = $con->prepare("SELECT * FROM categories WHERE id = ? LIMIT 1");
 
     // Execute Query
-    $stmt->execute(array($userid));
+    $stmt->execute(array($catid));
 
     // Fetch the data
     $row = $stmt->fetch();
@@ -357,12 +358,12 @@ echo "<div class='container'>";
 
     if ($stmt->rowCount() > 0 ) {
 
-    // Delete User Depends on USERID
-    $stmt = $con->prepare("DELETE FROM users WHERE userid = ? ");
+    // Delete Category Depends on ID
+    $stmt = $con->prepare("DELETE FROM categories WHERE id = ? ");
     // Bind Parameter to $userid
-    // $stmt->bindParam(":zuser", $userid);
-    // Excute Query
-    $stmt->execute(array($userid));
+    // $stmt->bindParam(":zuser", $userid); // Code from members
+    // Excute Query  
+    $stmt->execute(array($catid));
 
     echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Deleted </div> ';
 
