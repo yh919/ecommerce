@@ -13,7 +13,9 @@ if(isset($_SESSION['username'])) {
     // Dashboard Page Content
     // Latest Users Function Parameters
     $latestusers = 5;
+    $latestitems = 5;
     $thelatest = getLatest("*", "users","userid",$latestusers);
+    $thelatestitems = getLatest("*", "items","id",$latestitems);
 
     // EndOf Latest Users Function Parameters;
 
@@ -48,7 +50,10 @@ if(isset($_SESSION['username'])) {
         <div class="col-md-3">
             <div class="stat st-items">
                 Total Items
-                <span>1500</span>
+                <span><a href="items.php">
+                        <?php echo countItems('id', 'items') ?>
+                    </a>
+                </span>
             </div>
         </div>
     </div>
@@ -86,12 +91,25 @@ if(isset($_SESSION['username'])) {
             </div>
         </div>
         <div class="col-sm-6">
-            <div class="card text-black bg-light mb-3">
+            <div class="card text-white bg-dark mb-3">
                 <div class="card-header">
-                    Latest Items Added
+                    <ul class="list-unstyled">
+                        Latest <?php echo $latestitems ?> Added Items
                 </div>
-                <div class="card-body">
-                    Test
+                <div class="card-body latest-users">
+                    <?php
+                        foreach ($thelatestitems as $item) { ?>
+                    <li>
+                        <?php echo $item['item_name'] ?>
+                        <!-- <a href="members.php?do=Edit&userid=<?php echo $item['userid'] ?>"> -->
+                        <!-- <span class="btn btn-success float-end btn-latest text-center">Edit</span></a> -->
+                    </li>
+
+                    <?php
+                    }?>
+                    <?php 
+                ?>
+                    </ul>
                 </div>
             </div>
         </div>
