@@ -105,6 +105,17 @@ function countItems($item, $table) {
 }
 
 
+// Count items V 1.1
+// function countItemsCat($item,$table) {
+
+    // global $con;
+    
+    // $stmt3 = $con->prepare("SELECT COUNT($item)");
+
+
+// }
+
+
 // Get Latest Records Function V 1.0
 // Function to get latest itemds from database [Users , Items , comments]
 // $select = Field to select

@@ -38,6 +38,7 @@ if(isset($_SESSION['username'])) {
                 <td>#ID</td>
                 <td>Category Name</td>
                 <td>Description</td>
+                <td>Items Count</td>
                 <td>Control</td>
             </tr>
 
@@ -55,6 +56,7 @@ if(isset($_SESSION['username'])) {
                 echo "<td>" . $row['id'] . "</td>";
                 echo "<td>" . $row['name'] . "</td>";
                 echo "<td>" . $row['description'] . "</td>";
+                echo "<td>" . countItems('id', 'items') . "</td>";
                 ?>
             <td>
                 <a href="categories.php?do=Edit&id=<?php echo $row['id'] ?>" class="btn btn-success">
