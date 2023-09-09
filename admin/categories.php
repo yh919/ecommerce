@@ -227,12 +227,12 @@ if(isset($_SESSION['username'])) {
             <input type="hidden" name="catid" value="<?php echo $catid ?>">
             <label for="username" class="form-label"><?php echo lang('CATEGORY_NAME')?></label>
             <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
-                placeholder="Enter Category Name">
+                placeholder="Enter Category Name" value="<?php echo $row['name'] ?>">
         </div>
         <div class="col-md-4">
             <label for="fullname" class="form-label"><?php  echo lang('CATEGORY_DESCTIPTION')?></label>
             <input type="text" class="form-control" id="description" name="description" required='required'
-                placeholder="Enter Description">
+                placeholder="Enter Description" value='<?php echo $row['description'] ?>'>
         </div>
         <div class="col-12">
             <button type="submit" class="btn btn-primary"><?php echo lang('UPDATETEXT') ?></button>

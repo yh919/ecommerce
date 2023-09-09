@@ -49,7 +49,7 @@ if(isset($_SESSION['username'])) {
             
             // $rowcatid = $rows['catid'];
             
-            // $stmtcat = $con->prepare("SELECT id , name FROM categories WHERE id = $rowcatid");
+            // $stmtcat = $con->prepare("SELECT id , name FROM items WHERE id = $rowcatid");
             // $stmtcat->execute();
             // $catidget = $stmtcat->fetchAll();
             
@@ -65,7 +65,7 @@ if(isset($_SESSION['username'])) {
                 $stmt3 = $con->prepare("SELECT
                                             *
                                         FROM
-                                        categories");
+                                        items");
                 $stmt3->execute();
                 $cat = $stmt3->fetchAll();
 
@@ -99,20 +99,20 @@ if(isset($_SESSION['username'])) {
                 echo "<td>" . $row['price'] . "</td>";
                 ?>
             <td>
-                <a href="categories.php?do=Edit&id=<?php echo $row['id'] ?>" class="btn btn-success">
+                <a href="items.php?do=Edit&id=<?php echo $row['id'] ?>" class="btn btn-success">
                     Edit</a>
-                <a href="categories.php?do=Delete&id=<?php echo $row['id'] ?>" class="btn btn-danger confirm">
+                <a href="items.php?do=Delete&id=<?php echo $row['id'] ?>" class="btn btn-danger confirm">
                     Delete</a>
                 <!-- <?php
                     // if ($row['regstatus'] == 0) {
                         ?>
-                <a href="categories.php?do=Activate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
+                <a href="items.php?do=Activate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
                     Activate
                 </a>
                 <?php
                     // } elseif ($row['regstatus'] == 1) {
                         // ?>
-                <a href="categories.php?do=Deactivate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
+                <a href="items.php?do=Deactivate&userid=<?php // echo $row['userid'] ?>" class="btn btn-warning confirm">
                     Deactive
                 </a> -->
                 <?php
@@ -139,16 +139,23 @@ if(isset($_SESSION['username'])) {
 <div class="container">
     <form class="row g-3 form-group" action="?do=Insert" method="POST">
         <div class="col-md-4">
-            <label for="username" class="form-label"><?php echo lang('CATEGORY_NAME')?></label>
+            <label for="itemname" class="form-label"><?php echo lang('ITEM_NAME')?></label>
             <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
-                placeholder="Enter Category Name">
+                placeholder="Enter Item Name">
         </div>
         <div class="col-md-4">
-            <label for="fullname" class="form-label"><?php  echo lang('CATEGORY_DESCTIPTION')?></label>
-            <input type="text" class="form-control" id="description" name="description" required='required'
-                placeholder="Enter Description">
+            <label for="itemprice" class="form-label"><?php  echo lang('ITEM_PRICE')?></label>
+            <input type="text" class="form-control" id="itemprice" name="itemprice" required='required'
+                placeholder="Enter Item Price">
         </div>
-        <div class="col-12">
+        <div class="col-md-4">
+            <label for="itemcat" class="form-label"><?php echo lang('ITEM_CATEGORY') ?></label>
+            <select name="itemcatid" id="itemcatid" class="form-select">
+                <option selected> Choose Category </option>
+                <option value="1"> Mobiles </option>
+            </select>
+        </div>
+        <div class="col-md-12">
             <button type="submit" class="btn btn-primary"><?php echo lang('SUBMIT') ?></button>
         </div>
     </form>
@@ -164,20 +171,21 @@ if(isset($_SESSION['username'])) {
 
         // Get Variables from FORM
 
-        $catname   = $_POST['name'];
-        $descr   = $_POST['description'];
+        $itemName   = $_POST['name'];
+        $price   = $_POST['itemprice'];
+        $catid = $_POST['itemcatid'];
 
         // Validate Form
 
         $formErrors = array();
 
 
-        if (empty($catname)) {
+        if (empty($itemName)) {
 
             $formErrors[] = 'Username can\'t be <strong>Empty</strong>';
         }
 
-        if (empty($descr)) {
+        if (empty($price)) {
 
             $formErrors[] = 'Full Name can\'t be <strong>Empty</strong>';;
 
@@ -194,12 +202,12 @@ if(isset($_SESSION['username'])) {
 
         // Check if user exist in database
 
-        $check = checkItem("name", "categories", $catname);
+        $check = checkItem("item_name", "items", $itemName);
 
 
         if ($check == 1) {
 
-            echo   "<div class='alert alert-warning'> <strong> Username $catname already exist </strong> </div>";
+            echo   "<div class='alert alert-warning'> <strong> Username $itemName already exist </strong> </div>";
 
             redirectSuccess(6,$url);
 
@@ -207,18 +215,24 @@ if(isset($_SESSION['username'])) {
 
         // Insert info into database
 
+        // INSERT INTO `items` (`id`, `item_name`, `catid`, `price`) VALUES (NULL, 'Samsung A21', '1', '1750');
+
+
         $stmt = $con->prepare("INSERT INTO
-                                            categories (name, description)
-                                            VALUES (:zcatname, :zdescr)");
-        $stmt->execute(array(
-            'zcatname'        => $catname,
-            'zdescr'        => $descr,
-        ));
+                                            items (item_name, catid, price)
+                                            VALUES ( :zitemname , :zcatid , :zprice)");
+        $stmt->execute(
+            array(
+                ':zitemname' => $itemName,
+                ':zcatid' => $catid,
+                ':zprice' => $price,
+            )
+        );
         // Echo Success Message
 
         echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Added </div> ';
 
-        $url = 'categories.php?do=Manage';
+        $url = 'items.php?do=Manage';
         
         redirectSuccess(3,$url);
 
@@ -242,13 +256,13 @@ if(isset($_SESSION['username'])) {
 
         // Check IF Get user request is numeric & get the int value of it
 
-        $catid = (isset($_GET['id']) && is_numeric($_GET['id'])) ? intval($_GET['id']) : 0;
+        $itemid = (isset($_GET['id']) && is_numeric($_GET['id'])) ? intval($_GET['id']) : 0;
 
         // Select All Data Depend on this ID
-        $stmt = $con->prepare("SELECT * FROM categories WHERE id = ? LIMIT 1");
+        $stmt = $con->prepare("SELECT * FROM items WHERE id = ? LIMIT 1");
 
         // Execute Query
-        $stmt->execute(array($catid));
+        $stmt->execute(array($itemid));
 
         // Fetch the data
         $row = $stmt->fetch();
@@ -263,23 +277,32 @@ if(isset($_SESSION['username'])) {
 <h1 class="text-center">
     <?php echo lang('EDIT_CATEGORY') ?>
 </h1>
-<div class="container">
-    <form class="row g-3 form-group" action="?do=Update" method="POST">
-        <div class="col-md-4">
-            <input type="hidden" name="catid" value="<?php echo $catid ?>">
-            <label for="username" class="form-label"><?php echo lang('CATEGORY_NAME')?></label>
-            <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
-                placeholder="Enter Category Name">
-        </div>
-        <div class="col-md-4">
-            <label for="fullname" class="form-label"><?php  echo lang('CATEGORY_DESCTIPTION')?></label>
-            <input type="text" class="form-control" id="description" name="description" required='required'
-                placeholder="Enter Description">
-        </div>
-        <div class="col-12">
-            <button type="submit" class="btn btn-primary"><?php echo lang('UPDATETEXT') ?></button>
-        </div>
-    </form>
+div class="container">
+<form class="row g-3 form-group" action="?do=Update" method="POST">
+    <input type="hidden" name="itemid" value="<?php echo $itemid ?>">
+    <div class="col-md-4">
+        <label for="itemname" class="form-label"><?php echo lang('ITEM_NAME')?></label>
+        <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
+            placeholder="Enter Item Name" value="<?php echo $row['item_name'] ?>">
+    </div>
+    <div class="col-md-4">
+        <label for="itemprice" class="form-label"><?php  echo lang('ITEM_PRICE')?></label>
+        <input type="text" class="form-control" id="itemprice" name="itemprice" required='required'
+            placeholder="Enter Item Price" value="<?php echo $row['price'] ?>">
+    </div>
+    <div class="col-md-4">
+        <label for="itemcat" class="form-label"><?php echo lang('ITEM_CATEGORY') ?></label>
+        <select name="itemcatid" id="itemcatid" class="form-select">
+            <option selected> Choose Category </option>
+            <option value="1"> Mobiles </option>
+            <option value="2"> TVs </option>
+
+        </select>
+    </div>
+    <div class="col-md-12">
+        <button type="submit" class="btn btn-primary"><?php echo lang('SUBMIT') ?></button>
+    </div>
+</form>
 </div>
 
 
@@ -302,9 +325,10 @@ if(isset($_SESSION['username'])) {
 
         // Get Variables from FORM
 
-        $id         = $_POST['catid'];
-        $catname    = $_POST['name'];
-        $descr      = $_POST['description'];
+        $id             = $_POST['itemid'];
+        $itemName       = $_POST['itemname'];
+        $price          = $_POST['itemprice'];
+        $catid          = $_POST['itemcatid'];
 
        // 5od alcode mn ?do=Add
 
@@ -314,12 +338,12 @@ if(isset($_SESSION['username'])) {
         $formErrors = array();
 
         // 5od alcode mn $do=Add
-if (empty($catname)) {
+if (empty($itemName)) {
 
             $formErrors[] = 'Username can\'t be <strong>Empty</strong>';
         }
 
-        if (empty($descr)) {
+        if (empty($price)) {
 
             $formErrors[] = 'Full Name can\'t be <strong>Empty</strong>';;
 
@@ -336,12 +360,12 @@ if (empty($catname)) {
 
         // Check if user exist in database
 
-        $check = checkItem("name", "categories", $catname);
+        $check = checkItem("name", "items", $itemName);
 
 
         if ($check == 1) {
 
-            echo   "<div class='alert alert-warning'> <strong> Username $catname already exist </strong> </div>";
+            echo   "<div class='alert alert-warning'> <strong> Username $itemName already exist </strong> </div>";
 
             redirectSuccess(6,$url);
 
@@ -352,8 +376,8 @@ if (empty($catname)) {
             //   متنساش تغير الباراميترز في الستاتمينت عشان متقعدش تدور علي الايرور فين ساعه
             //                                       متنساش
 
-        $stmt = $con->prepare("UPDATE categories SET name = ? , description = ? WHERE id = ?");
-        $stmt->execute(array($catname,$descr,$id));
+        $stmt = $con->prepare("UPDATE items SET item_name = ? , catid = ? , price = ? WHERE id = ?");
+        $stmt->execute(array($itemName,$price,$catid,$id));
 
                         //                           بص فوق
 
@@ -362,7 +386,7 @@ if (empty($catname)) {
 
         echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Updated </div> ';
 
-            $url = 'categories.php?do=Manage';
+            $url = 'items.php?do=Manage';
             $seconds = 3;
             redirectSuccess($seconds,$url);
 
@@ -370,7 +394,7 @@ if (empty($catname)) {
 } else {
 
     $errorMsg = "عدل ام الباراميترز";
-    $url = 'categories.php';
+    $url = 'items.php';
 redirectHome($errorMsg, 5 ,$url);
 }
 
@@ -387,7 +411,7 @@ echo "<div class='container'>";
     $catid = (isset($_GET['id']) && is_numeric($_GET['id'])) ? intval($_GET['id']) : 0;
 
     // Select All Data Depend on this ID
-    $stmt = $con->prepare("SELECT * FROM categories WHERE id = ? LIMIT 1");
+    $stmt = $con->prepare("SELECT * FROM items WHERE id = ? LIMIT 1");
 
     // Execute Query
     $stmt->execute(array($catid));
@@ -401,7 +425,7 @@ echo "<div class='container'>";
     if ($stmt->rowCount() > 0 ) {
 
     // Delete Category Depends on ID
-    $stmt = $con->prepare("DELETE FROM categories WHERE id = ? ");
+    $stmt = $con->prepare("DELETE FROM items WHERE id = ? ");
     // Bind Parameter to $userid
     // $stmt->bindParam(":zuser", $userid); // Code from members
     // Excute Query  

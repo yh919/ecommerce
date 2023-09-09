@@ -57,6 +57,7 @@ function lang($phrase) {
     // Items
     'ITEM_NAME' => 'Item Name',
     'ITEM_PRICE' => 'Price',
+    'ITEM_CATEGORY' => 'Category',
     'MANAGE_ITEMS' => 'Manage Items',
     'ADD_ITEM' => 'Add Item',
     'UPDATE_ITEM' => 'Update Item',
