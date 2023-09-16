@@ -105,15 +105,21 @@ function countItems($item, $table) {
 }
 
 
-// Count items V 1.1
-// function countItemsCat($item,$table) {
 
-    // global $con;
-    
-    // $stmt3 = $con->prepare("SELECT COUNT($item)");
+// Count number of items @ Category Function v 1.0
+// Function to count number of Rows in the same category
+// $item = Item You Will Check For
+// $table = Table you will check in
+function countItemsCat($item, $table, $catid) {
 
+    global $con;
 
-// }
+    $stmt2 = $con->prepare("SELECT COUNT($item) FROM $table WHERE catid = $catid");
+
+    $stmt2->execute();
+
+    return $stmt2->fetchColumn();
+}
 
 
 // Get Latest Records Function V 1.0

@@ -56,7 +56,7 @@ if(isset($_SESSION['username'])) {
                 echo "<td>" . $row['id'] . "</td>";
                 echo "<td>" . $row['name'] . "</td>";
                 echo "<td>" . $row['description'] . "</td>";
-                echo "<td>" . countItems('id', 'items') . "</td>";
+                echo "<td>" . countItemsCat('id', 'items', $row['id']) . "</td>";
                 ?>
             <td>
                 <a href="categories.php?do=Edit&id=<?php echo $row['id'] ?>" class="btn btn-success">

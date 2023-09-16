@@ -153,6 +153,7 @@ if(isset($_SESSION['username'])) {
             <select name="itemcatid" id="itemcatid" class="form-select">
                 <option selected> Choose Category </option>
                 <option value="1"> Mobiles </option>
+                <option value="2"> TVs </option>
             </select>
         </div>
         <div class="col-md-12">
