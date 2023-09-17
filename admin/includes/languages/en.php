@@ -66,6 +66,14 @@ function lang($phrase) {
     'DELETE_ITEM' => 'Delete Item',
     // Shops
     'MANAGE_SHOPS' => 'Manage Shops',
+    'SHOP_NAME' => 'Shop Name',
+    'SHOP_DESCRIPTION' => 'Description',
+    'SHOP_OWNER' => 'Shop Owner',
+    'EDIT_SHOP' => 'Edit Shop',
+    'ADD_SHOP' => 'Add Shop',
+    'DELETE_SHOP' => 'Delete Shop',
+    'ACTIVATE_SHOP' => 'Activate Shop',
+    'DEACTIVATE_SHOP' => 'Activate Shop',
     
     );
 

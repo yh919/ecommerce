@@ -154,6 +154,7 @@ if(isset($_SESSION['username'])) {
                 <option selected> Choose Category </option>
                 <option value="1"> Mobiles </option>
                 <option value="2"> TVs </option>
+                <option value="3"> Books </option>
             </select>
         </div>
         <div class="col-md-12">
@@ -297,6 +298,7 @@ if(isset($_SESSION['username'])) {
                 <option selected> Choose Category </option>
                 <option value="1"> Mobiles </option>
                 <option value="2"> TVs </option>
+                <option value="3"> Books </option>
 
             </select>
         </div>

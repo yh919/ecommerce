@@ -1,6 +1,6 @@
 <?php
 ob_start(); // Output Buffering Start
-// Manage Members Page
+// Manage SHOPs Page
 // You can Add || Edit || Delete Mebers
 
 session_start();
@@ -17,7 +17,7 @@ if(isset($_SESSION['username'])) {
 
     // Start Manage Page
 
-    if ($do == 'Manage') { // Manage categories Page
+    if ($do == 'Manage') { // Manage Shops Page
 
         $query = '';
 
@@ -43,7 +43,7 @@ if(isset($_SESSION['username'])) {
         <table class="main-table text-center table table-bordered">
             <tr>
                 <td>#ID</td>
-                <td>Category Name</td>
+                <td>Shop Name</td>
                 <td>Description</td>
                 <td>Owner Name</td>
                 <td>Registered Date</td>
@@ -57,7 +57,7 @@ if(isset($_SESSION['username'])) {
                 // if ($row['groupid'] == 1) {
                     // $accessstatus = lang('ADMIN');
                 // } else {
-                    // $accessstatus = lang('MEMBER');
+                    // $accessstatus = lang('SHOP');
 
                      $ownername = '';
                                              foreach($users as $ids) {
@@ -100,29 +100,29 @@ if(isset($_SESSION['username'])) {
             ?>
         </table>
     </div>
-    <a class="btn btn-primary" href="?do=Add"> <i class="fa-solid fa-plus fa-xl"></i> New Category </a>
+    <a class="btn btn-primary" href="?do=Add"> <i class="fa-solid fa-plus fa-xl"></i> New Shop </a>
 </div>
 
 
-<?php } elseif ($do == 'Add') { // Add Members Page ?>
+<?php } elseif ($do == 'Add') { // Add SHOPs Page ?>
 
 <h1 class="text-center">
-    <?php echo lang('ADD_CATEGORY') ?>
+    <?php echo lang('ADD_SHOP') ?>
 </h1>
 <div class="container">
     <form class="row g-3 form-group" action="?do=Insert" method="POST">
         <div class="col-md-4">
-            <label for="username" class="form-label"><?php echo lang('CATEGORY_NAME')?></label>
+            <label for="username" class="form-label"><?php echo lang('SHOP_NAME')?></label>
             <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
                 placeholder="Enter Shop Name">
         </div>
         <div class="col-md-4">
-            <label for="fullname" class="form-label"><?php  echo lang('CATEGORY_DESCTIPTION')?></label>
+            <label for="fullname" class="form-label"><?php  echo lang('SHOP_DESCRIPTION')?></label>
             <input type="text" class="form-control" id="description" name="description" required='required'
                 placeholder="Enter Description">
         </div>
         <div class="col-md-4">
-            <label for="shopowner" class="form-label"><?php echo lang('ITEM_CATEGORY') ?></label>
+            <label for="shopowner" class="form-label"><?php echo lang('SHOP_OWNER') ?></label>
             <select name="shopowner" id="shopowner" class="form-select">
                 <option selected> Choose Owner </option>
                 <option value="1"> bunny </option>
@@ -138,12 +138,12 @@ if(isset($_SESSION['username'])) {
 
 <?php
 
-}elseif ($do == 'Insert') { // Insert Member Page
+}elseif ($do == 'Insert') { // Insert SHOP Page
 
     if ($_SERVER['REQUEST_METHOD'] == "POST") {
 
     echo "<h1 class='text-center'>";
-    echo lang('UPDATE_MEMBER');
+    echo lang('UPDATE_SHOP');
     echo "</h1>";
     echo "<div class='container'>";
 
@@ -179,7 +179,7 @@ if(isset($_SESSION['username'])) {
 
         // Check if user exist in database
 
-        $check = checkItem("name", "categories", $shopname);
+        $check = checkItem("name", "shops", $shopname);
 
 
         if ($check == 1) {
@@ -248,7 +248,7 @@ if(isset($_SESSION['username'])) {
         // if ($row['groupid'] == '1') {
             // $usergroupid = lang('ADMIN');
         // } else {
-            // $usergroupid = lang('MEMBER');
+            // $usergroupid = lang('SHOP');
         // }
 
         // Truster Seller variables
@@ -263,23 +263,23 @@ if(isset($_SESSION['username'])) {
             if ($stmt->rowCount() > 0 ) { ?>
 
 <h1 class="text-center">
-    <?php echo lang('EDIT_MEMBER') ?>
+    <?php echo lang('EDIT_SHOP') ?>
 </h1>
 <div class="container">
     <form class="row g-3 form-group" action="?do=Update" method="POST">
         <input type="hidden" name="id" value="<?php echo $shopid ?>">
         <div class="col-md-4">
-            <label for="username" class="form-label"><?php echo lang('CATEGORY_NAME')?></label>
+            <label for="username" class="form-label"><?php echo lang('SHOP_NAME')?></label>
             <input type="text" class="form-control" id="name" name="name" autocomplete="off" required='required'
                 placeholder="Enter Shop Name" value="<?php echo $row['name'] ?>">
         </div>
         <div class="col-md-4">
-            <label for="fullname" class="form-label"><?php  echo lang('CATEGORY_DESCTIPTION')?></label>
+            <label for="fullname" class="form-label"><?php  echo lang('SHOP_DESCRIPTION')?></label>
             <input type="text" class="form-control" id="description" name="description" required='required'
                 placeholder="Enter Description" value="<?php echo $row['description'] ?>">
         </div>
         <div class="col-md-4">
-            <label for="shopowner" class="form-label"><?php echo lang('ITEM_CATEGORY') ?></label>
+            <label for="shopowner" class="form-label"><?php echo lang('SHOP_OWNER') ?></label>
             <select name="shopowner" id="shopowner" class="form-select">
                 <option selected> Choose Owner </option>
                 <option value="1"> bunny </option>
@@ -303,7 +303,7 @@ if(isset($_SESSION['username'])) {
 } elseif ($do == 'Update') {
 
     echo "<h1 class='text-center'>";
-    echo lang('UPDATE_MEMBER');
+    echo lang('UPDATE_SHOP');
     echo "</h1>";
     echo "<div class='container'>";
 
@@ -353,7 +353,7 @@ if(isset($_SESSION['username'])) {
 
         echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Updated </div> ';
 
-            $url = 'shops.php?do=Manage';
+            $url = '?do=Manage';
             $seconds = 3;
             redirectSuccess($seconds,$url);
 
@@ -369,7 +369,7 @@ echo "</div>";
 } elseif ($do == 'Delete') { // Delete Users
 
 echo "<h1 class='text-center'>";
-    echo lang('DELETE_MEMBER');
+    echo lang('DELETE_SHOP');
     echo "</h1>";
 echo "<div class='container'>";
 
@@ -400,7 +400,7 @@ echo "<div class='container'>";
 
     echo "<div class='alert alert-success'></strong>" . $stmt->rowCount() . ' </strong>Record Deleted </div> ';
 
-    $url = 'members.php?do=Manage';
+    $url = '?do=Manage';
     redirectSuccess(3,$url);
 
     } else {
@@ -413,7 +413,7 @@ echo "<div class='container'>";
 } elseif ($do == 'Activate') {
 
   echo "<h1 class='text-center'>";
-    echo lang('ACTIVATE_MEMBER');
+    echo lang('ACTIVATE_SHOP');
     echo "</h1>";
 echo "<div class='container'>";
 
@@ -459,7 +459,7 @@ echo "<div class='container'>";
     
 } elseif ($do == 'Deactivate') {
     echo "<h1 class='text-center'>";
-    echo lang('ACTIVATE_MEMBER');
+    echo lang('DEACTIVATE_SHOP');
     echo "</h1>";
 echo "<div class='container'>";
 
