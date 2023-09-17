@@ -18,6 +18,9 @@
                         href="members.php?do=Manage"><?php echo lang('MEMBERS')?></a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" aria-current="page" href="shops.php"><?php echo lang('SHOPS')?></a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" aria-current="page" href="#"><?php echo lang('LOGS')?></a>
                 </li>
                 <li class="nav-item dropdown mr-auto">

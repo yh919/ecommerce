@@ -10,6 +10,7 @@ function lang($phrase) {
     'CATEGORIES'    => 'Categories',
     'ITEMS'         => 'Items',
     'MEMBERS'       => 'Members',
+    'SHOPS'       => 'Shops',
     'ADMIN_NAME'    => "Bunny",
     'EDIT_PROFILE'  => 'Edit Profile',
     'SETTINGS'      => 'Settings',
@@ -63,6 +64,9 @@ function lang($phrase) {
     'UPDATE_ITEM' => 'Update Item',
     'EDIT_ITEM' => 'Edit Item',
     'DELETE_ITEM' => 'Delete Item',
+    // Shops
+    'MANAGE_SHOPS' => 'Manage Shops',
+    
     );
 
     return $lang[$phrase];

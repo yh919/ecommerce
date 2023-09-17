@@ -22,15 +22,21 @@ if(isset($_SESSION['username'])) {
         $query = '';
 
         // Select Users from Database
-        $stmt = $con->prepare("SELECT * FROM categories");
+        $stmt = $con->prepare("SELECT * FROM shops");
         // Excute Statement
         $stmt->execute();
         // Assign to variable
         $rows = $stmt->fetchAll();
 
+        $stmt4 = $con->prepare("SELECT * FROM users");
+
+        $stmt4->execute();
+
+        $users = $stmt4->fetchAll();
+
     ?>
 
-<h1 class="text-center"><?php echo lang('MANAGE_CATEGORIES') ?></h1>
+<h1 class="text-center"><?php echo lang('MANAGE_SHOPS') ?></h1>
 <div class="container">
     <div class="table-responsive">
         <table class="main-table text-center table table-bordered">
@@ -38,7 +44,7 @@ if(isset($_SESSION['username'])) {
                 <td>#ID</td>
                 <td>Category Name</td>
                 <td>Description</td>
-                <td>Items Count</td>
+                <td>Owner Name</td>
                 <td>Control</td>
             </tr>
 
@@ -51,12 +57,18 @@ if(isset($_SESSION['username'])) {
                 // } else {
                     // $accessstatus = lang('MEMBER');
 
+                     $ownername = '';
+                                            foreach($users as $ids) {
+                                                if ($row['ownerid'] == $ids['userid']) {
+                                                    $ownername = $ids['username'];
+                                                }
+                                            }
 
                 echo "<tr>";
                 echo "<td>" . $row['id'] . "</td>";
                 echo "<td>" . $row['name'] . "</td>";
                 echo "<td>" . $row['description'] . "</td>";
-                echo "<td>" . countItemsCat('id', 'items', $row['id']) . "</td>";
+                echo "<td>" . $ownername . "</td>";
                 ?>
             <td>
                 <a href="categories.php?do=Edit&id=<?php echo $row['id'] ?>" class="btn btn-success">
